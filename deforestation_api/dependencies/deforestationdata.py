@@ -16,14 +16,6 @@ def load_geoparquet(path) -> gpd.GeoDataFrame:
     return df
 
 
-def load_parquet(path) -> pd.DataFrame:
-    df = pd.read_parquet(
-        path,
-        storage_options={"anon": True},
-    )
-    return df
-
-
 def get_lossyear_data() -> gpd.GeoDataFrame:
     df = pd.read_parquet(
         settings.lossyear_data_path,
