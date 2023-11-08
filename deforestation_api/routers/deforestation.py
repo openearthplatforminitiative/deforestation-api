@@ -62,9 +62,8 @@ async def lossyear(
     # Iterating though features and adding the treecover loss data for each basin polygon.
     # Currently with a single point query there should only be one feature.
     # If a bounding-box query feature is added there may be multiple polygons in the response.
-    for item in res["features"]:
-        item["id"] = int(
-            item["id"]
-        )  # The id field is annoyingly converted to str in the to_json method in geopandas
-        add_treecover_loss_data(item, lossyear, startyear, endyear)
+    for basin_polygon in res["features"]:
+        # The id field is annoyingly converted to str in the to_json method in geopandas
+        basin_polygon["id"] = int(basin_polygon["id"])
+        add_treecover_loss_data(basin_polygon, lossyear, startyear, endyear)
     return res
