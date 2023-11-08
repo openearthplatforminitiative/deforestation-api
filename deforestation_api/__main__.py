@@ -1,22 +1,31 @@
 from contextlib import asynccontextmanager
+import logging
 
 from fastapi import FastAPI
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.inmemory import InMemoryBackend
-from deforestation_api.settings import Settings
-from deforestation_api.routers import deforestation, healthcheck
 
+from deforestation_api.dependencies.deforestationdata import fetch_deforestation_data, deforestation_data_fetcher
+from deforestation_api.routers import deforestation, healthcheck
+from deforestation_api.settings import settings
+
+import asyncio
 
 @asynccontextmanager
-async def lifespan(_: FastAPI):
-    FastAPICache.init(InMemoryBackend(), prefix="fastapi-cache")
+async def lifespan(deforestation_app: FastAPI):
+    await fetch_deforestation_data(deforestation_app)
+    asyncio.create_task(deforestation_data_fetcher(deforestation_app))
     yield
 
 
-settings = Settings()
-app = FastAPI(title="deforestation API", version=settings.version, lifespan=lifespan)
+app = FastAPI(
+    title="Deforestation API",
+    lifespan=lifespan,
+    version=settings.version,
+    root_path=settings.api_root_path,
+)
 app.include_router(deforestation.router)
 app.include_router(healthcheck.router)
+
+logging.basicConfig(level=logging.INFO)
 
 if __name__ == "__main__":
     import uvicorn

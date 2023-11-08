@@ -46,15 +46,11 @@ async def lossyear(
     lat, lon = coordinates
     startyear, endyear = date_range
     filtered_basins = spatial_filter(basins, lat, lon)
-    filtered_basins["startyear"] = startyear
-    filtered_basins["endyear"] = endyear
     res = filtered_basins[
         [
             "downstream_id",
             "basin_area",
             "upstream_area",
-            "startyear",
-            "endyear",
             "geometry",
         ]
     ].to_json()
@@ -65,5 +61,7 @@ async def lossyear(
     for basin_polygon in res["features"]:
         # The id field is annoyingly converted to str in the to_json method in geopandas
         basin_polygon["id"] = int(basin_polygon["id"])
+        basin_polygon["properties"]["startyear"] = startyear
+        basin_polygon["properties"]["endyear"] = endyear
         add_treecover_loss_data(basin_polygon, lossyear, startyear, endyear)
     return res
