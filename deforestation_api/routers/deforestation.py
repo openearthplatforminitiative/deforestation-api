@@ -11,7 +11,7 @@ from deforestation_api.dependencies.deforestationdata import (
 )
 from deforestation_api.dependencies.queryparams import CoordinatesDep, DateRangeDep
 
-router = APIRouter(prefix="/deforestation", tags=["deforestation"])
+router = APIRouter(tags=["deforestation"])
 
 
 def spatial_filter(
