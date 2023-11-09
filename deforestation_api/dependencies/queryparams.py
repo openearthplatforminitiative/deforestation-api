@@ -20,20 +20,16 @@ CoordinatesDep = Annotated[tuple[float, float], Depends(coordinates)]
 
 
 def date_range(
-    startyear: Annotated[
-        int | None,
-        Query(
-            description="Inclusive lower bound for the range of years to return data for. Defaults to 2020."
-        ),
+    start_year: Annotated[
+        int,
+        Query(description="First year to return forest cover loss data for."),
     ] = 2020,
-    endyear: Annotated[
-        int | None,
-        Query(
-            description="Inclusive lower bound for the range of years to return data for. Defaults to 2020."
-        ),
+    end_year: Annotated[
+        int,
+        Query(description="Last year to return forest cover loss data for."),
     ] = 2022,
 ) -> (int, int):
-    return startyear, endyear
+    return start_year, end_year
 
 
 DateRangeDep = Annotated[tuple[int, int], Depends(date_range)]
