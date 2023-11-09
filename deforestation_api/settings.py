@@ -8,7 +8,9 @@ class Settings(BaseSettings):
     uvicorn_reload: bool = True
     uvicorn_proxy_headers: bool = False
     basin_data_path: str = "s3://databricks-data-openepi/deforestation/basins.parquet"
-    lossyear_data_path: str = "s3://databricks-data-openepi/deforestation/lossyear.parquet"
+    lossyear_data_path: str = (
+        "s3://databricks-data-openepi/deforestation/lossyear.parquet"
+    )
     api_root_path: str = "/"
 
 

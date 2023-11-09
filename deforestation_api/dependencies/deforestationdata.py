@@ -25,6 +25,7 @@ def fetch_geoparquet(path: str) -> gpd.GeoDataFrame:
     logger.info(f"Done reloading data from %s", path)
     return gdf
 
+
 def fetch_parquet(path) -> pd.DataFrame:
     logger.info(f"Reloading data from %s", path)
 

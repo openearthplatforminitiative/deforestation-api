@@ -14,7 +14,8 @@ def basin_data_available():
         return True, "Basin data available"
     else:
         return False, "Basin data not available"
-    
+
+
 def lossyear_data_available():
     s3 = s3fs.S3FileSystem(anon=True)
     if s3.exists(settings.lossyear_data_path):
@@ -33,6 +34,7 @@ health.add_check(lossyear_data_available)
 async def ready() -> Response:
     message, status_code, headers = health.run()
     return Response(content=message, headers=headers, status_code=status_code)
+
 
 @router.get("/health")
 def liveness() -> dict[str, str]:

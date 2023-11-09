@@ -3,11 +3,15 @@ import logging
 
 from fastapi import FastAPI
 
-from deforestation_api.dependencies.deforestationdata import fetch_deforestation_data, deforestation_data_fetcher
+from deforestation_api.dependencies.deforestationdata import (
+    fetch_deforestation_data,
+    deforestation_data_fetcher,
+)
 from deforestation_api.routers import deforestation, healthcheck
 from deforestation_api.settings import settings
 
 import asyncio
+
 
 @asynccontextmanager
 async def lifespan(deforestation_app: FastAPI):
