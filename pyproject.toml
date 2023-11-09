@@ -14,8 +14,6 @@ pydantic = "^2.4.2"
 pydantic-settings = "^2.0.3"
 httpx = "^0.25.0"
 py-healthcheck = "^1.10.1"
-psycopg = {extras = ["binary"], version = "^3.1.12"}
-alembic = "^1.12.0"
 pandas = "^2.1.2"
 geopandas = "^0.14.0"
 s3fs = "^2023.10.0"
