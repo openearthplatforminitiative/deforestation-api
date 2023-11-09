@@ -50,7 +50,7 @@ BasinDataDep = Annotated[gpd.GeoDataFrame, Depends(get_basin_data)]
 
 async def deforestation_data_fetcher(app: FastAPI):
     logger.info("Deforestation data fetcher running")
-    schedule = crontab("0 0 1 * * *", tz=timezone.utc)
+    schedule = crontab("0 0 1 * *", tz=timezone.utc)
     while True:
         await schedule.next()
         await fetch_deforestation_data(app)
