@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 def fetch_geoparquet(path: str) -> gpd.GeoDataFrame:
-    logger.info(f"Reloading data from {path}")
+    logger.info(f"Reloading data from %s", path)
 
     gdf = gpd.read_parquet(
         path,
@@ -22,17 +22,17 @@ def fetch_geoparquet(path: str) -> gpd.GeoDataFrame:
     )
     gdf = gdf.set_index("id")
     gdf.sindex  # Initializing the spatial index speeds up spatial queries
-    logger.info(f"Done reloading data from {path}")
+    logger.info(f"Done reloading data from %s", path)
     return gdf
 
 def fetch_parquet(path) -> pd.DataFrame:
-    logger.info(f"Reloading data from {path}")
+    logger.info(f"Reloading data from %s", path)
 
     df = pd.read_parquet(
         path,
         storage_options={"anon": True},
     )
-    logger.info(f"Done reloading data from {path}")
+    logger.info(f"Done reloading data from %s", path)
     return df
 
 
