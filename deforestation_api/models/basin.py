@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pydantic import BaseModel, Field
 from typing import Literal
 
@@ -60,7 +62,7 @@ class BasinProperties(BaseModel):
 
 
 class DeforestationBasinFeature(BaseModel):
-    id: int = Field(example=1071119930)
+    id: int = Field(example=1071119930, description="Unique basin polygon identifier.")
     type: Literal["Feature"]
     properties: BasinProperties
     geometry: Polygon
