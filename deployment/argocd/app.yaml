@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: apps-deforestation-api
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: deforestation-api
+  namespace: apps-deforestation-api
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: apps-deforestation-api
+    server: https://kubernetes.default.svc
+  project: apps
+  source:
+    path: deployment/kubernetes/
+    repoURL: https://github.com/openearthplatforminitiative/deforestation-api
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
