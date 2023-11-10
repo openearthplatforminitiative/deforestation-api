@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "deforestation-api"
+version = "0.1.0"
+description = "API for deforestation data"
+authors = ["Aleksander Stangeland <aleksander.stangeland@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "~3.11"
+fastapi = "^0.104.0"
+uvicorn = "^0.23.2"
+pydantic = "^2.4.2"
+pydantic-settings = "^2.0.3"
+httpx = "^0.25.0"
+py-healthcheck = "^1.10.1"
+pandas = "^2.1.2"
+geopandas = "^0.14.0"
+s3fs = "^2023.10.0"
+shapely = "^2.0.2"
+pyarrow = "^14.0.0"
+aiocron = "^1.8"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+pytest = "^7.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
