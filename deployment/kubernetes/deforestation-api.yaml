@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deforestation-api
+  namespace: apps-deforestation-api
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: deforestation-api
+  template:
+    metadata:
+      namespace: apps-deforestation-api
+      labels:
+        app: deforestation-api
+    spec:
+      containers:
+        - image: ghcr.io/openearthplatforminitiative/deforestation-api:0.0.1
+          name: deforestation-api
+          ports:
+            - containerPort: 8080
+          env:
+            - name: API_ROOT_PATH
+              value: "/deforestation"
+            - name: VERSION
+              value: 0.0.1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deforestation-api
+  namespace: apps-deforestation-api
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: deforestation-api
+---
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: deforestation-api
+spec:
+  http:
+    - name: deforestation-api
+      match:
+        paths:
+          - /deforestation/*
+      backends:
+        - serviceName: deforestation-api
+          servicePort: 80
+      plugins:
+        - name: proxy-rewrite
+          enable: true
+          config:
+            regex_uri:
+              - "^/deforestation/(.*)"
+              - "/$1"
