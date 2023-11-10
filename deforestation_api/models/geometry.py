@@ -11,14 +11,6 @@ LinearRing = Annotated[list[Position], Field(min_length=4)]
 PolygonCoords = list[LinearRing]
 
 
-class FeatureCollectionType(Enum):
-    FeatureCollection = "FeatureCollection"
-
-
-class FeatureType(Enum):
-    Feature = "Feature"
-
-
 class Polygon(BaseModel):
     type: Literal["Polygon"]
     coordinates: PolygonCoords

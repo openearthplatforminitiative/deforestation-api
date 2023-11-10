@@ -34,7 +34,6 @@ health.add_check(lossyear_data_available)
     "/ready",
     summary="Check if this service is ready to receive requests",
     description="Returns a message describing the status of this service",
-    tags=["health"],
 )
 async def ready() -> Response:
     message, status_code, headers = health.run()
@@ -45,7 +44,6 @@ async def ready() -> Response:
     "/health",
     summary="Check if this service is alive",
     description="Returns a simple message to indicate that this service is alive",
-    tags=["health"],
 )
 def liveness() -> dict[str, str]:
     return {"message": "Ok"}

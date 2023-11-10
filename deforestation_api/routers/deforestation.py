@@ -51,7 +51,6 @@ def add_treecover_loss_data(
         "Returns the total deforested area within the river basin "
         "containing the given location over a time period."
     ),
-    tags=["deforestation"],
     response_model=DeforestationBasinGeoJSON,
 )
 async def lossyear(
