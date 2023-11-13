@@ -25,6 +25,7 @@ app = FastAPI(
     lifespan=lifespan,
     version=settings.version,
     root_path=settings.api_root_path,
+    description=settings.api_description,
 )
 app.include_router(deforestation.router)
 app.include_router(healthcheck.router)
