@@ -46,10 +46,10 @@ def add_treecover_loss_data(
 
 @router.get(
     "/basin",
-    summary="Get forest cover loss in river basin",
+    summary="Get yearly forest cover loss within a river basin",
     description=(
-        "Returns the total deforested area within the river basin "
-        "containing the given location over a time period."
+        "Returns the estimated deforested area per year within a river basin "
+        "for the given location."
     ),
     response_model=DeforestationBasinGeoJSON,
 )
