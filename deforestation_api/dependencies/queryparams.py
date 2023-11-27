@@ -23,7 +23,7 @@ def date_range(
     start_year: Annotated[
         int,
         Query(description="First year to return forest cover loss data for."),
-    ] = 2020,
+    ] = 2001,
     end_year: Annotated[
         int,
         Query(description="Last year to return forest cover loss data for."),
