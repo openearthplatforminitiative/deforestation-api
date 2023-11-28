@@ -16,7 +16,7 @@ spec:
         app: deforestation-api
     spec:
       containers:
-        - image: ghcr.io/openearthplatforminitiative/deforestation-api:0.1.2
+        - image: ghcr.io/openearthplatforminitiative/deforestation-api:0.2.2
           name: deforestation-api
           ports:
             - containerPort: 8080
@@ -24,7 +24,7 @@ spec:
             - name: API_ROOT_PATH
               value: "/deforestation"
             - name: VERSION
-              value: 0.1.2
+              value: 0.2.2
 ---
 apiVersion: v1
 kind: Service
