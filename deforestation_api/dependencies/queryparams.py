@@ -52,11 +52,11 @@ CoordinatesDep = Annotated[
 def date_range(
     start_year: Annotated[
         int,
-        Query(description="First year to return forest cover loss data for."),
+        Query(description="First year in the date range to return data for."),
     ] = 2001,
     end_year: Annotated[
         int,
-        Query(description="Last year to return forest cover loss data for."),
+        Query(description="Last year in the data range to return data for."),
     ] = 2022,
 ) -> tuple[int, int]:
     return start_year, end_year
