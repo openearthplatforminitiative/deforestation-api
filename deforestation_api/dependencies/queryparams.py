@@ -6,27 +6,31 @@ from fastapi import Depends, Query, HTTPException
 def coordinates(
     lon: Annotated[
         float | None,
-        Query(description="Longitude of the point to retrieve data for"),
+        Query(description="Longitude of the point to retrieve data for."),
     ] = None,
     lat: Annotated[
         float | None,
-        Query(description="Latitude of the point to retrieve data for"),
+        Query(description="Latitude of the point to retrieve data for."),
     ] = None,
     min_lon: Annotated[
         float | None,
-        Query(description="Minimal longitude for the query bounding box."),
+        Query(
+            description="Minimal longitude of the bounding box to retrieve data for."
+        ),
     ] = None,
     min_lat: Annotated[
         float | None,
-        Query(description="Minimal latitude for the query bounding box."),
+        Query(description="Minimal latitude of the bounding box to retrieve data for."),
     ] = None,
     max_lon: Annotated[
         float | None,
-        Query(description="Maximal longitude for the query bounding box."),
+        Query(
+            description="Maximal longitude of the bounding box to retrieve data for."
+        ),
     ] = None,
     max_lat: Annotated[
         float | None,
-        Query(description="Maximal latitude for the query bounding box."),
+        Query(description="Maximal latitude of the bounding box to retrieve data for."),
     ] = None,
 ) -> tuple[float, float] | tuple[float, float, float, float]:
     if lon is not None and lat is not None:
