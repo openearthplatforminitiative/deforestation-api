@@ -16,8 +16,14 @@ LinearRing = Annotated[
     ),
 ]
 PolygonCoords = list[LinearRing]
+MultiPolygonCoords = list[PolygonCoords]
 
 
 class Polygon(BaseModel):
     type: Literal["Polygon"]
     coordinates: PolygonCoords
+
+
+class MultiPolygon(BaseModel):
+    type: Literal["MultiPolygon"]
+    coordinates: MultiPolygonCoords
