@@ -3,7 +3,7 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 from typing import Literal
 
-from deforestation_api.models.geometry import Polygon
+from deforestation_api.models.geometry import Polygon, MultiPolygon
 
 
 class LossYear(BaseModel):
@@ -67,7 +67,7 @@ class DeforestationBasinFeature(BaseModel):
     )
     type: Literal["Feature"]
     properties: BasinProperties
-    geometry: Polygon
+    geometry: Polygon | MultiPolygon
 
 
 class DeforestationBasinGeoJSON(BaseModel):
