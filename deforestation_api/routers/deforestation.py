@@ -68,8 +68,9 @@ def add_treecover_loss_data(
     "/basin",
     summary="Get yearly forest cover loss within a river basin",
     description=(
-        "Returns the estimated deforested area per year within a river basin "
-        "for the given location."
+        "Returns the estimated deforested area per year within a river basin for the given location."
+        " To retrieve data for a single point both `lon` and `lon` must be included in the request."
+        " To retrieve data within a bounding box all of `min_lon`, `min_lat`, `max_lon`, `max_lat` must be included in the request."
     ),
     response_model=DeforestationBasinGeoJSON,
 )
