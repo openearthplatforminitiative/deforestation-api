@@ -12,31 +12,31 @@ def coordinates(
         float | None,
         Query(description="Latitude of the point to retrieve data for"),
     ] = None,
-    lon_min: Annotated[
+    min_lon: Annotated[
         float | None,
         Query(description="Minimal longitude for the query bounding box."),
     ] = None,
-    lat_min: Annotated[
+    min_lat: Annotated[
         float | None,
         Query(description="Minimal latitude for the query bounding box."),
     ] = None,
-    lon_max: Annotated[
+    max_lon: Annotated[
         float | None,
         Query(description="Maximal longitude for the query bounding box."),
     ] = None,
-    lat_max: Annotated[
+    max_lat: Annotated[
         float | None,
         Query(description="Maximal latitude for the query bounding box."),
     ] = None,
 ) -> tuple[float, float] | tuple[float, float, float, float]:
     if lon is not None and lat is not None:
         return lon, lat
-    bbox = (lon_min, lat_min, lon_max, lat_max)
+    bbox = (min_lon, min_lat, max_lon, max_lat)
     if all(v is not None for v in bbox):
         return bbox
     raise HTTPException(
         status_code=400,
-        detail="Missing coordinates in request. Request should either include both lat and lon, or all of lon_min, lat_min, lon_max, lat_max.",
+        detail="Missing coordinates in request. Request must either include both lat and lon, or all of min_lon, min_lat, max_lon, max_lat.",
     )
 
 
@@ -54,7 +54,7 @@ def date_range(
         int,
         Query(description="Last year to return forest cover loss data for."),
     ] = 2022,
-) -> (int, int):
+) -> tuple[int, int]:
     return start_year, end_year
 
 

@@ -38,7 +38,8 @@ def bbox_query(
 
 
 def filter_basin_df(
-    df: gpd.GeoDataFrame, coordinates: tuple[float, ...]
+    df: gpd.GeoDataFrame,
+    coordinates: tuple[float, float] | tuple[float, float, float, float],
 ) -> gpd.GeoDataFrame:
     if len(coordinates) == 2:
         return point_query(df, *coordinates)
@@ -79,7 +80,6 @@ async def lossyear(
     lossyear: LossyearDataDep,
 ) -> DeforestationBasinGeoJSON:
     start_year, end_year = date_range
-    # filtered_basins = point_query(basins, lon, lat)
     filtered_basins = filter_basin_df(basins, coordinates)
     res = filtered_basins[
         [
