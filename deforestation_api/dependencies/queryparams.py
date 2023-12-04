@@ -15,22 +15,22 @@ def coordinates(
     min_lon: Annotated[
         float | None,
         Query(
-            description="Minimal longitude of the bounding box to retrieve data for."
+            description="Minimum longitude of the bounding box to retrieve data for."
         ),
     ] = None,
     min_lat: Annotated[
         float | None,
-        Query(description="Minimal latitude of the bounding box to retrieve data for."),
+        Query(description="Minimum latitude of the bounding box to retrieve data for."),
     ] = None,
     max_lon: Annotated[
         float | None,
         Query(
-            description="Maximal longitude of the bounding box to retrieve data for."
+            description="Maximum longitude of the bounding box to retrieve data for."
         ),
     ] = None,
     max_lat: Annotated[
         float | None,
-        Query(description="Maximal latitude of the bounding box to retrieve data for."),
+        Query(description="Maximum latitude of the bounding box to retrieve data for."),
     ] = None,
 ) -> tuple[float, float] | tuple[float, float, float, float]:
     point = (lon, lat)
