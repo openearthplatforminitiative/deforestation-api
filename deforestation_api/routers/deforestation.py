@@ -1,4 +1,4 @@
-from shapely import Point
+from shapely import Point, box
 import geopandas as gpd
 import pandas as pd
 import json
@@ -19,12 +19,32 @@ from deforestation_api.models.basin import (
 router = APIRouter(tags=["deforestation"])
 
 
-def spatial_filter(
-    df: gpd.GeoDataFrame, lon: float, lat: float, predicate: str = "within"
-) -> gpd.GeoDataFrame:
+def point_query(df: gpd.GeoDataFrame, lon: float, lat: float) -> gpd.GeoDataFrame:
     p = Point(lon, lat)
-    query_index = df.sindex.query(p, predicate=predicate)
+    query_index = df.sindex.query(p, predicate="within")
     return df.iloc[query_index]
+
+
+def bbox_query(
+    df: gpd.GeoDataFrame,
+    lon_min: float,
+    lat_min: float,
+    lon_max: float,
+    lat_max: float,
+) -> gpd.GeoDataFrame:
+    bbox = box(lon_min, lat_min, lon_max, lat_max)
+    query_index = df.sindex.query(bbox, predicate="intersects")
+    return df.iloc[query_index]
+
+
+def filter_basin_df(
+    df: gpd.GeoDataFrame,
+    coordinates: tuple[float, float] | tuple[float, float, float, float],
+) -> gpd.GeoDataFrame:
+    if len(coordinates) == 2:
+        return point_query(df, *coordinates)
+    if len(coordinates) == 4:
+        return bbox_query(df, *coordinates)
 
 
 def add_treecover_loss_data(
@@ -48,10 +68,10 @@ def add_treecover_loss_data(
     "/basin",
     summary="Get yearly forest cover loss within a river basin",
     description=(
-        "Returns the estimated deforested area per year within a river basin "
-        "for the given location."
+        "Returns the estimated deforested area per year within a river basin for the given location."
+        " To retrieve data for a single point both `lon` and `lon` must be included in the request."
+        " To retrieve data within a bounding box all of `min_lon`, `min_lat`, `max_lon`, `max_lat` must be included in the request."
     ),
-    response_model=DeforestationBasinGeoJSON,
 )
 async def lossyear(
     coordinates: CoordinatesDep,
@@ -59,9 +79,8 @@ async def lossyear(
     basins: BasinDataDep,
     lossyear: LossyearDataDep,
 ) -> DeforestationBasinGeoJSON:
-    lon, lat = coordinates
     start_year, end_year = date_range
-    filtered_basins = spatial_filter(basins, lon, lat)
+    filtered_basins = filter_basin_df(basins, coordinates)
     res = filtered_basins[
         [
             "downstream_id",
