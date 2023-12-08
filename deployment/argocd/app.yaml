@@ -1,18 +1,13 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: apps-deforestation-api
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: deforestation-api
-  namespace: apps-deforestation-api
+  namespace: apps
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: apps-deforestation-api
+    namespace: apps
     server: https://kubernetes.default.svc
   project: apps
   source:
