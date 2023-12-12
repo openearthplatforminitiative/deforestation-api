@@ -1,8 +1,10 @@
+import pathlib
 from contextlib import asynccontextmanager
 import logging
 
 from fastapi import FastAPI
-
+from fastapi.openapi.docs import get_redoc_html
+from deforestation_api.openapi import openapi
 from deforestation_api.dependencies.deforestationdata import (
     fetch_deforestation_data,
     deforestation_data_fetcher,
@@ -21,16 +23,27 @@ async def lifespan(deforestation_app: FastAPI):
 
 
 app = FastAPI(
-    title="Deforestation API",
     lifespan=lifespan,
-    version=settings.version,
     root_path=settings.api_root_path,
-    description=settings.api_description,
+    redoc_url=None,
 )
 app.include_router(deforestation.router)
 app.include_router(healthcheck.router)
 
 logging.basicConfig(level=logging.INFO)
+
+example_code_dir = pathlib.Path(__file__).parent / "example_code"
+app.openapi_schema = openapi.custom_openapi(app, example_code_dir)
+
+
+@app.get("/redoc", include_in_schema=False)
+def redoc():
+    return get_redoc_html(
+        openapi_url="/openapi.json",
+        title="Deforestation API",
+        redoc_favicon_url="https://www.openepi.io/favicon.ico",
+    )
+
 
 if __name__ == "__main__":
     import uvicorn
