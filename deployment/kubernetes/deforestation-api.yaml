@@ -40,23 +40,30 @@ spec:
   selector:
     app: deforestation-api
 ---
-apiVersion: apisix.apache.org/v2
-kind: ApisixRoute
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: stripprefix-deforestation
+spec:
+  stripPrefix:
+    prefixes:
+      - /deforestation
+    forceSlash: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
   name: deforestation-api
 spec:
-  http:
-    - name: deforestation-api
-      match:
-        paths:
-          - /deforestation/*
-      backends:
-        - serviceName: deforestation-api
-          servicePort: 80
-      plugins:
-        - name: proxy-rewrite
-          enable: true
-          config:
-            regex_uri:
-              - "^/deforestation/(.*)"
-              - "/$1"
+  entryPoints:
+    - web
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/deforestation`)
+    services:
+    - kind: Service
+      name: deforestation-api
+      port: 80
+    middlewares:
+    - name: stripprefix-deforestation
+
