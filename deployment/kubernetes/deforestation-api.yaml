@@ -65,5 +65,6 @@ spec:
       name: deforestation-api
       port: 80
     middlewares:
+    - name: forward-auth-forward-auth@kubernetescrd
     - name: stripprefix-deforestation
 
