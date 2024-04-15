@@ -4,6 +4,8 @@ import logging
 
 from fastapi import FastAPI
 from fastapi.openapi.docs import get_redoc_html
+from prometheus_fastapi_instrumentator import Instrumentator
+
 from deforestation_api.openapi import openapi
 from deforestation_api.dependencies.deforestationdata import (
     fetch_deforestation_data,
@@ -34,6 +36,7 @@ logging.basicConfig(level=logging.INFO)
 
 example_code_dir = pathlib.Path(__file__).parent / "example_code"
 app.openapi_schema = openapi.custom_openapi(app, example_code_dir)
+Instrumentator().instrument(app).expose(app)
 
 
 @app.get("/redoc", include_in_schema=False)
