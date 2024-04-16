@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: deforestation-api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - image: ghcr.io/openearthplatforminitiative/deforestation-api:0.3.0
