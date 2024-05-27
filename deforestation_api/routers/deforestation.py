@@ -55,6 +55,22 @@ def add_treecover_loss_data(
 ) -> None:
     basin_loss = treecover_loss[treecover_loss["id"] == feature["id"]]
     basin_loss = basin_loss.loc[basin_loss["year"].between(start_year, end_year)]
+
+    basin_loss = (
+        basin_loss.groupby(["id", "year"])
+        .agg(
+            tree_loss_incidents=("tree_loss_incidents", "sum"),
+            first_cell_area=("first_cell_area", "first"),
+        )
+        .reset_index()
+    )
+    basin_loss["area"] = (
+        basin_loss["tree_loss_incidents"] * basin_loss["first_cell_area"]
+    )
+    basin_loss["relative_area"] = (
+        basin_loss["area"] / feature["properties"]["basin_area"]
+    )
+
     total_loss = basin_loss["area"].sum()
     relative_loss = basin_loss["relative_area"].sum()
     loss_per_year = basin_loss.drop(columns="id").to_json(orient="records")
