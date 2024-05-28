@@ -33,6 +33,7 @@ def fetch_parquet(path) -> pd.DataFrame:
         path,
         storage_options={"anon": True},
     )
+    df = df.rename(columns={"HYBAS_ID": "id"})
     logger.info(f"Done reloading data from %s", path)
     return df
 
