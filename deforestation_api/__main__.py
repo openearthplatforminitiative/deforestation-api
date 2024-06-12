@@ -34,7 +34,7 @@ app.include_router(deforestation.router)
 app.include_router(healthcheck.router)
 
 # The OpenEPI logo needs to be served as a static file since it is referenced in the OpenAPI schema
-app.mount("/static", StaticFiles(directory="assets/"), name="static")
+app.mount("/static", StaticFiles(directory="deforestation_api/assets/"), name="static")
 
 logging.basicConfig(level=logging.INFO)
 
