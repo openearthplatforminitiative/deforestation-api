@@ -60,6 +60,19 @@ spec:
     forceSlash: true
 ---
 apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: cors-deforestation
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+---
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: deforestation-api
@@ -75,4 +88,5 @@ spec:
       port: 80
     middlewares:
     - name: stripprefix-deforestation
+    - name: cors-deforestation
 
