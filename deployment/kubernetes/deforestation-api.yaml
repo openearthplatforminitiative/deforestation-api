@@ -60,19 +60,6 @@ spec:
     forceSlash: true
 ---
 apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: cors-deforestation
-spec:
-  headers:
-    accessControlAllowMethods:
-      - "GET"
-    accessControlAllowHeaders:
-      - "*"
-    accessControlAllowOriginList:
-      - "*"
----
-apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: deforestation-api
@@ -81,12 +68,24 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: PathPrefix(`/deforestation`) && !PathPrefix(`/deforestation/metrics`)
+    match: PathPrefix(`/deforestation`) && !PathPrefix(`/deforestation/metrics`) && HeadersRegexp(`Authorization`, `.+`)
     services:
     - kind: Service
       name: deforestation-api
       port: 80
     middlewares:
     - name: stripprefix-deforestation
-    - name: cors-deforestation
+    - name: traefikmiddleware-cors@kubernetescrd
+    - name: traefikmiddleware-jwt@kubernetescrd
+    - name: traefikmiddleware-rate-limit-registered@kubernetescrd
+  - kind: Rule
+    match: PathPrefix(`/deforestation`) && !PathPrefix(`/deforestation/metrics`) && !HeadersRegexp(`Authorization`, `.+`)
+    services:
+    - kind: Service
+      name: deforestation-api
+      port: 80
+    middlewares:
+    - name: stripprefix-deforestation
+    - name: traefikmiddleware-cors@kubernetescrd
+    - name: traefikmiddleware-rate-limit-anonymous@kubernetescrd
 
